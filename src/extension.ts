@@ -37,7 +37,7 @@ function getIndentCount(textEditor: vscode.TextEditor, line: number): number {
 
     let text = textEditor.document.lineAt(line).text;
     let count = 0;
-    while (text.length > 9)
+    while (text.length > 0)
     {
         if (!text.startsWith(unit))
             break;
