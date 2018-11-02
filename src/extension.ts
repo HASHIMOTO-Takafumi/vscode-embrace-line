@@ -10,16 +10,57 @@ export function activate(context: vscode.ExtensionContext) {
 
 function embrace(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
     textEditor.edit((editBuilder) => {
-        const line = textEditor.selection.start.line;
-        const count = getIndentCount(textEditor, line);
+        const [start, end] = getSelection(textEditor);
+        const count = getIndentCount(textEditor, start);
 
-        editBuilder.insert(new vscode.Position(line, 0),
+        editBuilder.insert(new vscode.Position(start, 0),
             generateIndent(textEditor, count) + "{\n" +
             generateIndent(textEditor, 1));
-        editBuilder.insert(new vscode.Position(line + 1, 0),
+        for (let i = start + 1; i <= end; i++)
+        {
+            editBuilder.insert(new vscode.Position(i, 0),
+                generateIndent(textEditor, 1));
+        }
+        editBuilder.insert(new vscode.Position(end + 1, 0),
             generateIndent(textEditor, count) + "}\n");
     });
 
+}
+
+function getSelection(textEditor: vscode.TextEditor): [number, number] {
+    const start = textEditor.selection.start;
+    const end = textEditor.selection.end;
+
+    let startChar = start.character;
+    let endChar = end.character;
+    let startLine = start.line;
+    let endLine = end.line;
+
+    while (startLine < endLine)
+    {
+        const startLineText = textEditor.document.lineAt(startLine).text;
+        if (startLineText.substr(startChar).trim() == "")
+        {
+            startLine++;
+            startChar = 0;
+        }
+        else
+            break;
+    }
+
+    while (startLine < endLine)
+    {
+        const endLineText = textEditor.document.lineAt(endLine).text;
+        if (endLineText.substr(0, endChar).trim() == "")
+        {
+            endLine--;
+            endChar = undefined;
+        }
+        else
+            break;
+    }
+
+    return [startLine, endLine];
 }
 
 function getIndentCount(textEditor: vscode.TextEditor, line: number): number {
