@@ -3,5 +3,5 @@ All notable changes to the "vscode-embrace-line" extension will be documented in
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [1.0.0] - 2019-02-01
 - Initial release

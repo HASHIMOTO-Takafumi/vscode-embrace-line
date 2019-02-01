@@ -1,8 +1,8 @@
 {
     "name": "vscode-embrace-line",
     "displayName": "vscode-embrace-line",
-    "description": "Surround the line with brackets",
-    "version": "0.0.1",
+    "description": "Surround the line(s) with braces",
+    "version": "1.0.0",
     "publisher": "HASHIMOTO-Takafumi",
     "engines": {
         "vscode": "^1.10.0"
